@@ -1,4 +1,4 @@
-# This workflow will help you to produce an HTML extra test results report
+# Este workflow vai gerar um relatório de resultados de testes em HTML extra
 
 name: Newman Tests
 on: [push, pull_request]
@@ -7,33 +7,32 @@ jobs:
   test-api:
     runs-on: ubuntu-latest
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      # Faz o checkout do repositório
+      - uses: actions/checkout@v3  # Atualizado para v3
       
-   # INstall Node on the runner
+      # Instala o Node no runner
       - name: Install Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3  # Atualizado para v3
         with: 
           node-version: '16.x'
-
     
-    # Install the newman command line utility and also install the html extra reporter
+      # Instala o Newman e o HTML extra reporter
       - name: Install newman
         run: |
           npm install -g newman
           npm install -g newman-reporter-htmlextra
           
-    # Make directory to upload the test results
+      # Cria o diretório para os resultados dos testes
       - name: Make Directory for results
         run: mkdir -p testResults
         
-   # Run the POSTMAN collection
+      # Executa a coleção POSTMAN
       - name: Run API Tests
         run: newman run "Restful Booker BVT.postman_collection.json" -e Production.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
 
-    # Upload the contents of Test Results directory to workspace
+      # Faz upload do conteúdo do diretório de resultados dos testes
       - name: Output the run Details
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3  # Atualizado para v3
         with: 
           name: RunReports
           path: testResults
